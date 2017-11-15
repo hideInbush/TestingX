@@ -1,16 +1,26 @@
 /* webpack.config.js */
+var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin'); 
+var ROOT_PATH = path.resolve(__dirname);
+var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 module.exports = {
     entry: './src/js/entry.js',
     output: {
-        path: './out',
-        publicPath: './out',
+        path: BUILD_PATH,
         filename: 'index.js'
     },
     module: {
         loaders: [
-            {test: /\.js$/, loader: 'babel'},
-            {test: /\.css$/, loader: 'style!css'},
-            {test: /\.(jpg|png|gif|svg)$/, loader: 'url?limit=8192'}
+            {//抽取css
+                test: /\.css$/,
+                loaders: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})
+            },
         ]
-    }
+    },
+    resolve: {
+        extensions: ['.js']
+    },
+    plugins: [
+        new ExtractTextPlugin('index.css')
+    ]
 }
