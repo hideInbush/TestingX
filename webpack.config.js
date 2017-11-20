@@ -36,6 +36,10 @@ module.exports = {
                 test: /\.css$/,
                 loaders: ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader" })
             },
+            {//支持处理字体
+                test: /\.(woff|svg|eot|ttf)\??.*$/,
+                use: 'url-loader?limit=1&name=fonts/[name].[ext]',
+            }
             /*{//支持处理图片
                 test: /\.(png|jpg)$/,
                 use: 'url-loader?limit=1&name=[name].[ext]&outputPath=img/',
@@ -46,7 +50,7 @@ module.exports = {
         extensions: ['.js']
     },
     plugins: [
-        new ExtractTextPlugin('[name].css'),
+        new ExtractTextPlugin('index.css'),
         new HtmlWebpackPlugin({
             title: 'TestingX',
             filename: 'index.html',
