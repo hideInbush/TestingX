@@ -47,7 +47,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js']
+        extensions: ['.js','.jsx']
     },
     plugins: [
         new ExtractTextPlugin('index.css'),

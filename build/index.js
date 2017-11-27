@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -300,6 +300,21 @@ module.exports = emptyFunction;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(16);
+} else {
+  module.exports = __webpack_require__(17);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /*
 object-assign
 (c) Sindre Sorhus
@@ -393,7 +408,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -414,21 +429,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(15);
-} else {
-  module.exports = __webpack_require__(16);
-}
-
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
@@ -577,7 +577,7 @@ module.exports = warning;
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(5);
   var warning = __webpack_require__(6);
-  var ReactPropTypesSecret = __webpack_require__(17);
+  var ReactPropTypesSecret = __webpack_require__(18);
   var loggedTypeFailures = {};
 }
 
@@ -632,6 +632,52 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+function checkDCE() {
+  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
+  if (
+    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
+    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
+  ) {
+    return;
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    // This branch is unreachable because this function is only called
+    // in production, but the condition is true only in development.
+    // Therefore if the branch is still here, dead code elimination wasn't
+    // properly applied.
+    // Don't change the message. React DevTools relies on it. Also make sure
+    // this message doesn't occur elsewhere in this function, or it will cause
+    // a false positive.
+    throw new Error('^_^');
+  }
+  try {
+    // Verify that the code above has been dead code eliminated (DCE'd).
+    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
+  } catch (err) {
+    // DevTools shouldn't crash React, no matter what.
+    // We should still report in case we break this code.
+    console.error(err);
+  }
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // DCE check should happen before ReactDOM bundle executes so that
+  // DevTools can report bad minification during injection.
+  checkDCE();
+  module.exports = __webpack_require__(19);
+} else {
+  module.exports = __webpack_require__(22);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -667,7 +713,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -748,7 +794,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -790,7 +836,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -861,7 +907,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -904,7 +950,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -934,7 +980,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -942,13 +988,17 @@ module.exports = focusNode;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(4);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(8);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _sideBar = __webpack_require__(27);
+
+var _sideBar2 = _interopRequireDefault(_sideBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -958,825 +1008,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-__webpack_require__(27);
+__webpack_require__(28);
 
-var eventProxy = __webpack_require__(36)();
+// import TabCard from '../jsx/components/tabCard';
 
-/*侧边栏*/
 
-var SideBar = function (_React$Component) {
-    _inherits(SideBar, _React$Component);
-
-    function SideBar() {
-        _classCallCheck(this, SideBar);
-
-        var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this));
-
-        _this.state = {
-            folders: []
-        };
-        return _this;
-    }
-
-    _createClass(SideBar, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            // var sideBar = this;
-            // var getRequest = {};
-            // var requestParams = JSON.stringify(getRequest);
-            // var xmlhttp;
-            // var url = 'http://127.0.0.1:3000/phoenix/getRequest';
-            // if (window.XMLHttpRequest){
-            //     xmlhttp=new XMLHttpRequest();
-            // }
-            // else{
-            //     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            // }
-            // xmlhttp.onreadystatechange=function(){
-            //     if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            //     {
-            //         var result = JSON.parse(xmlhttp.responseText);
-
-            //         var tree = {};
-            //         result.data.forEach(function(v){
-            //             if(tree[v.categoryId]){
-            //                 tree[v.categoryId].data.push(v);
-            //             }else{
-            //                 tree[v.categoryId] = {};
-            //                 tree[v.categoryId].id = v.categoryId;
-            //                 tree[v.categoryId].name = v.categoryName;
-            //                 tree[v.categoryId].data = [];
-            //                 tree[v.categoryId].data.push(v);
-            //             }
-            //         })
-
-            //         var folders = [];
-            //         for(var x in tree){
-            //             folders.push(tree[x]);
-            //         }
-
-            //         sideBar.setState({
-            //             folders: folders
-            //         })
-            //     }else{
-            //     }
-            // }
-            // xmlhttp.open("POST",url,true);
-            // xmlhttp.send(requestParams);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'sideBar' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'filter' },
-                    _react2.default.createElement('input', { type: 'text', placeholder: 'Fliter' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'menu' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'row-box tabs' },
-                        _react2.default.createElement(
-                            'a',
-                            { className: 'active' },
-                            'Collections'
-                        ),
-                        _react2.default.createElement(
-                            'a',
-                            { style: { display: 'none' } },
-                            'History'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'folders' },
-                        this.state.folders.map(function (v, index) {
-                            var _this2 = this;
-
-                            return _react2.default.createElement(
-                                'ul',
-                                null,
-                                _react2.default.createElement(
-                                    'a',
-                                    { onClick: function onClick() {
-                                            return _this2.collapseCategory(event, index);
-                                        } },
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: v.expand ? 'iconfont iconfont-expand' : 'iconfont iconfont-collapse' },
-                                        '\uE6A7'
-                                    ),
-                                    _react2.default.createElement(
-                                        'a',
-                                        null,
-                                        v.name
-                                    ),
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: 'iconfont iconfont-edit' },
-                                        '\uE69E'
-                                    ),
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: 'iconfont iconfont-delete' },
-                                        '\uE69D'
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'ul',
-                                    { style: v.expand ? { display: 'block' } : { display: 'none' } },
-                                    v.data.map(function (request, index) {
-                                        var _this3 = this;
-
-                                        return _react2.default.createElement(
-                                            'li',
-                                            { className: 'labelCursor', onClick: function onClick() {
-                                                    return _this3.getRequest(event, request.requestId);
-                                                } },
-                                            _react2.default.createElement(
-                                                'a',
-                                                { className: request.type == 'GET' ? 'type get' : 'type post' },
-                                                request.type
-                                            ),
-                                            _react2.default.createElement(
-                                                'a',
-                                                { className: 'title' },
-                                                request.requestName
-                                            )
-                                        );
-                                    }, this)
-                                )
-                            );
-                        }, this)
-                    )
-                ),
-                _react2.default.createElement(
-                    'a',
-                    { onClick: function onClick() {
-                            return _this4.addCategory();
-                        }, className: 'bread' },
-                    '+'
-                )
-            );
-        }
-    }, {
-        key: 'addCategory',
-        value: function addCategory() {
-            var folders = this.state.folders.slice();
-            var newCategory = {};
-            newCategory.name = 'Test Folder';
-            newCategory.data = [];
-            folders.push(newCategory);
-            this.setState({
-                folders: folders
-            });
-        }
-    }, {
-        key: 'collapseCategory',
-        value: function collapseCategory(event, index) {
-            var folders = this.state.folders.slice();
-            var object = event.srcElement ? event.srcElement : event.target;
-            if (object.tagName.toLowerCase() == 'i' && object.className.indexOf('iconfont-edit') > -1) {
-                _reactDom2.default.render(_react2.default.createElement(ReviseForm, { categoryName: folders[index].name }), document.getElementById('modal-revise'));
-                return;
-            } else if (object.tagName.toLowerCase() == 'i' && object.className.indexOf('iconfont-delete') > -1) {
-                alert('delete');
-                return;
-            } else {
-                folders[index].expand = !folders[index].expand;
-                this.setState({
-                    folders: folders
-                });
-            }
-        }
-    }, {
-        key: 'getRequest',
-        value: function getRequest(event, requestId) {
-            var requestParams = {
-                requestId: requestId
-            };
-            requestParams = JSON.stringify(requestParams);
-            var xmlhttp;
-            var url = 'http://127.0.0.1:3000/phoenix/getRequest';
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var result = JSON.parse(xmlhttp.responseText);
-                    console.log(result.data[0]);
-                    // 发布 tab 事件
-                    eventProxy.trigger('tab', result.data[0]);
-                } else {}
-            };
-            xmlhttp.open("POST", url, true);
-            xmlhttp.send(requestParams);
-        }
-    }]);
-
-    return SideBar;
-}(_react2.default.Component);
-
-var Tab = function (_React$Component2) {
-    _inherits(Tab, _React$Component2);
-
-    function Tab() {
-        _classCallCheck(this, Tab);
-
-        return _possibleConstructorReturn(this, (Tab.__proto__ || Object.getPrototypeOf(Tab)).apply(this, arguments));
-    }
-
-    _createClass(Tab, [{
-        key: 'render',
-        value: function render() {
-            var _this6 = this;
-
-            var className = this.props.active ? 'centerAlign textEllipsis post_tabs-actived' : 'centerAlign textEllipsis';
-            return _react2.default.createElement(
-                'a',
-                { onClick: function onClick() {
-                        return _this6.props.onClick();
-                    }, className: className },
-                _react2.default.createElement(
-                    'i',
-                    { className: 'iconfont' },
-                    '\uE69A'
-                ),
-                this.props.name
-            );
-        }
-    }]);
-
-    return Tab;
-}(_react2.default.Component);
-
-var Posts = function (_React$Component3) {
-    _inherits(Posts, _React$Component3);
-
-    function Posts() {
-        _classCallCheck(this, Posts);
-
-        var _this7 = _possibleConstructorReturn(this, (Posts.__proto__ || Object.getPrototypeOf(Posts)).call(this));
-
-        _this7.state = {
-            // httpType : 'post',
-            // url : null,
-            // desc :  null,
-            // requestParams : null,
-            // requestHeader : null,
-            // responseParams : null,
-            // responseHeader : null,
-            requestTabs: [{ id: 1, active: true }, { id: 2, active: false }],
-            responseTabs: [{ id: 1, active: true }, { id: 2, active: false }]
-        };
-        return _this7;
-    }
-
-    _createClass(Posts, [{
-        key: 'render',
-        value: function render() {
-            var _this8 = this;
-
-            var className = this.props.active ? 'post_card_items' : 'displayNone post_card_items';
-            return _react2.default.createElement(
-                'div',
-                { className: className },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'post_card_items up' },
-                    _react2.default.createElement('input', { type: 'text', placeholder: '\u8BF7\u8F93\u5165\u63A5\u53E3\u8BF4\u660E>>', value: this.props.posts.description || '',
-                        onChange: function onChange() {
-                            return _this8.props.textChange(event, 'desc', _this8.props.id);
-                        } })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'post_card_items bottom' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'post_card_items sendUrl' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'row-box post_card_items sendUrl urlPanel' },
-                            _react2.default.createElement(
-                                'select',
-                                { value: this.props.posts.httpType || "POST", onChange: function onChange() {
-                                        return _this8.props.selectChange(event, _this8.props.id);
-                                    } },
-                                _react2.default.createElement(
-                                    'option',
-                                    { value: 'GET' },
-                                    'GET'
-                                ),
-                                _react2.default.createElement(
-                                    'option',
-                                    { value: 'POST' },
-                                    'POST'
-                                )
-                            ),
-                            _react2.default.createElement('input', { type: 'text', placeholder: '_> URL HERE ', value: this.props.posts.url || '',
-                                onChange: function onChange() {
-                                    return _this8.props.textChange(event, 'url', _this8.props.id);
-                                } }),
-                            _react2.default.createElement(
-                                'a',
-                                { onClick: function onClick() {
-                                        return _this8.requestSend();
-                                    }, className: 'centerAlign' },
-                                'Send'
-                            ),
-                            _react2.default.createElement(
-                                'a',
-                                { onClick: function onClick() {
-                                        return _this8.requestSave();
-                                    }, className: 'save centerAlign' },
-                                'Save'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'post_card_items params' },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'tabs' },
-                                _react2.default.createElement(
-                                    'a',
-                                    { onClick: function onClick() {
-                                            return _this8.tabChange('request', '1');
-                                        },
-                                        className: this.state.requestTabs[0].active ? 'tabs_items-actived' : '' },
-                                    'JSON'
-                                ),
-                                _react2.default.createElement(
-                                    'a',
-                                    { onClick: function onClick() {
-                                            return _this8.tabChange('request', '2');
-                                        },
-                                        className: this.state.requestTabs[1].active ? 'tabs_items-actived' : '' },
-                                    'Header'
-                                ),
-                                _react2.default.createElement(
-                                    'a',
-                                    { className: 'beautify', onClick: function onClick() {
-                                            return _this8.props.jsonBeautify(_this8.props.id);
-                                        } },
-                                    'JSON Beautify'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'content' },
-                                _react2.default.createElement('textarea', { id: 'requestText', onChange: function onChange() {
-                                        return _this8.props.textChange(event, 'requestParams', _this8.props.id);
-                                    },
-                                    className: this.state.requestTabs[0].active ? '' : 'displayNone',
-                                    value: this.props.posts.requestParams || '' }),
-                                _react2.default.createElement('textarea', { id: 'requestHeader',
-                                    className: this.state.requestTabs[1].active ? '' : 'displayNone' })
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'tabs', id: 'responseTabs' },
-                                _react2.default.createElement(
-                                    'a',
-                                    { onClick: function onClick() {
-                                            return _this8.tabChange('response', '1');
-                                        },
-                                        className: this.state.responseTabs[0].active ? 'tabs_items-actived' : '' },
-                                    'JSON'
-                                ),
-                                _react2.default.createElement(
-                                    'a',
-                                    { onClick: function onClick() {
-                                            return _this8.tabChange('response', '2');
-                                        },
-                                        className: this.state.responseTabs[1].active ? 'tabs_items-actived' : '' },
-                                    'Header'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'content', id: 'responseContent' },
-                                _react2.default.createElement('pre', { id: 'responseText',
-                                    className: this.state.responseTabs[0].active ? '' : 'displayNone' }),
-                                _react2.default.createElement('pre', { id: 'responseHeader',
-                                    className: this.state.responseTabs[1].active ? '' : 'displayNone' })
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }, {
-        key: 'tabChange',
-        value: function tabChange(type, id) {
-            switch (type) {
-                case 'request':
-                    var tabs = this.state.requestTabs;
-                    tabs.forEach(function (v, i) {
-                        v.active = false;
-                    });
-                    tabs[parseInt(id) - 1].active = true;
-                    this.setState({
-                        requestTabs: tabs
-                    });
-                    break;
-                case 'response':
-                    var tabs = this.state.responseTabs;
-                    tabs.forEach(function (v, i) {
-                        v.active = false;
-                    });
-                    tabs[parseInt(id) - 1].active = true;
-                    this.setState({
-                        responseTabs: tabs
-                    });
-                    break;
-            }
-        }
-    }, {
-        key: 'requestSend',
-        value: function requestSend() {
-            // var url = this.state.url;
-            // var requestParams = JSON.stringify(JSON.parse(this.state.requestParams));
-            var posts = this;
-
-            var xmlhttp;
-            var url = "./index.php";
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var header = xmlhttp.getAllResponseHeaders();
-                    var data = xmlhttp.responseText;
-                    // posts.setState({
-                    //     responseParams: JSON.stringify(JSON.parse(data), null, 4),
-                    //     responseHeader: header
-                    // })
-                    document.getElementById("responseText").innerHTML = posts.syntaxHighlight(JSON.stringify(JSON.parse(data), null, 4));
-                    document.getElementById("responseHeader").innerHTML = header;
-                } else {}
-            };
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-            // var t = window.setTimeout(function() {
-            //     var data = '{"success":true,"data":false}';
-            //     responseJson.value = JSON.stringify(JSON.parse(data), null, 4);
-            // }, 1000);
-        }
-    }, {
-        key: 'requestSave',
-        value: function requestSave() {
-            var addCategory = {
-                categoryName: 'Halo'
-            };
-
-            var addRequest = {
-                requestName: 'Test',
-                categoryId: '1',
-                description: 'test request',
-                type: 'POST',
-                requestUrl: 'http://',
-                requestJson: 'asd'
-            };
-
-            var getRequest = {};
-
-            var requestParams = JSON.stringify(getRequest);
-            var posts = this;
-
-            var xmlhttp;
-            // var url = 'http://127.0.0.1:3000/phoenix/addCategory';
-            // var url = 'http://127.0.0.1:3000/phoenix/addRequest';
-            var url = 'http://127.0.0.1:3000/phoenix/getRequest';
-            // var url = 'http://127.0.0.1:3000/potter';
-
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var header = xmlhttp.getAllResponseHeaders();
-                    var data = xmlhttp.responseText;
-                    console.log(data);
-                } else {}
-            };
-            xmlhttp.open("POST", url, true);
-            xmlhttp.send(requestParams);
-        }
-
-        /*json语法高亮*/
-
-    }, {
-        key: 'syntaxHighlight',
-        value: function syntaxHighlight(json) {
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
-    }]);
-
-    return Posts;
-}(_react2.default.Component);
-
-var TabCard = function (_React$Component4) {
-    _inherits(TabCard, _React$Component4);
-
-    function TabCard() {
-        _classCallCheck(this, TabCard);
-
-        var _this9 = _possibleConstructorReturn(this, (TabCard.__proto__ || Object.getPrototypeOf(TabCard)).call(this));
-
-        _this9.state = {
-            tabs: [{ id: 0, name: "测试接口1", active: true, posts: { httpType: 'POST', url: null, description: null, requestParams: null, requestHeader: null, responseParams: null, responseHeader: null } }]
-        };
-        return _this9;
-    }
-
-    _createClass(TabCard, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this10 = this;
-
-            // 监听 tab 事件
-            eventProxy.on('tab', function (tab) {
-                var tabs = _this10.state.tabs.slice();
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].active) {
-                        tabs[i].active = false;
-                        break;
-                    }
-                }
-
-                tab.id = tab.categoryId;
-                tab.name = tab.requestName;
-                tab.active = true;
-                tab.posts = {};
-                tab.posts.httpType = tab.type;
-                tab.posts.url = tab.requestUrl;
-                tab.posts.description = tab.description;
-                tab.posts.requestParams = tab.requestJson;
-                tab.posts.requestHeader = null;
-                tab.posts.responseParams = null;
-                tab.posts.responseHeader = null;
-
-                tabs.push(tab);
-                _this10.setState({
-                    tabs: tabs
-                });
-            });
-        }
-    }, {
-        key: 'handleTabClick',
-        value: function handleTabClick(event, id) {
-            /*清楚所有active*/
-            var obj = event.srcElement ? event.srcElement : event.target;
-            if (obj.className.indexOf('iconfont') == -1) {
-                var tabs = this.state.tabs.slice();
-                tabs.forEach(function (v, i, array) {
-                    v.active = false;
-                });
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].id == id) {
-                        tabs[i].active = true;
-                        break;
-                    }
-                }
-                this.setState({
-                    tabs: tabs
-                });
-            } else {
-                var tabs = this.state.tabs.slice();
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].id == id && tabs[i].active == true) {
-                        tabs.splice(i, 1);
-                        if (tabs.length > 0) {
-                            tabs[0].active = true;
-                        }
-                    } else if (tabs[i].id == id && tabs[i].active == false) {
-                        tabs.splice(i, 1);
-                    }
-                }
-
-                if (tabs.length == 0) {
-                    var posts = {
-                        httpType: 'POST',
-                        url: null,
-                        desc: null,
-                        requestParams: null,
-                        requestHeader: null,
-                        responseParams: null,
-                        responseHeader: null
-                    };
-                    tabs = [{ id: 1, name: "测试接口1", active: true, posts: posts }];
-                }
-                this.setState({
-                    tabs: tabs
-                });
-            }
-        }
-    }, {
-        key: 'handleAddTabs',
-        value: function handleAddTabs() {
-            var tabs = this.state.tabs.slice();
-            var newId = parseInt(tabs[tabs.length - 1].id) + 1;
-            var newName = '测试接口' + newId;
-            var posts = {
-                httpType: 'POST',
-                url: null,
-                desc: null,
-                requestParams: null,
-                requestHeader: null,
-                responseParams: null,
-                responseHeader: null
-            };
-            tabs.push({ id: newId, name: newName, active: false, posts: posts });
-            this.setState({
-                tabs: tabs
-            });
-        }
-    }, {
-        key: 'selectChange',
-        value: function selectChange(event, id) {
-            var tabs = this.state.tabs.slice();
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].id == id) {
-                    tabs[i].posts.httpType = event.target.value.toUpperCase();
-                    break;
-                }
-            }
-            this.setState({
-                tabs: tabs
-            });
-        }
-    }, {
-        key: 'textChange',
-        value: function textChange(event, type, id) {
-            var tabs = this.state.tabs.slice();
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].id == id) {
-                    var value = event.target.value;
-                    switch (type) {
-                        case 'url':
-                            tabs[i].posts.url = value;
-                            break;
-                        case 'requestParams':
-                            tabs[i].posts.requestParams = value;
-                            break;
-                        case 'responseParams':
-                            tabs[i].posts.responseParams = value;
-                            break;
-                        case 'desc':
-                            tabs[i].posts.desc = value;
-                            break;
-                    }
-                    this.setState({
-                        tabs: tabs
-                    });
-                    break;
-                }
-            }
-        }
-    }, {
-        key: 'jsonBeautify',
-        value: function jsonBeautify(id) {
-            try {
-                var tabs = this.state.tabs.slice();
-                var index = 0;
-                var requestParams;
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].id == id) {
-                        requestParams = tabs[i].posts.requestParams;
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (requestParams) {
-                    var requestJson = JSON.parse(requestParams);
-                    var value = JSON.stringify(requestJson, null, 4);
-
-                    tabs[index].posts.requestParams = value;
-                    this.setState({
-                        tabs: tabs
-                    });
-                } else {
-                    alert("格式化数据为空");
-                }
-            } catch (e) {
-                alert(e);
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this11 = this;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'container' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'post_tabs row-box' },
-                    this.state.tabs.map(function (v) {
-                        return _react2.default.createElement(Tab, {
-                            onClick: function onClick() {
-                                return _this11.handleTabClick(event, v.id);
-                            },
-                            name: v.name,
-                            active: v.active,
-                            id: v.id,
-                            title: v.name
-                        });
-                    }),
-                    _react2.default.createElement(
-                        'a',
-                        { onClick: function onClick() {
-                                return _this11.handleAddTabs();
-                            }, className: 'centerAlign' },
-                        _react2.default.createElement(
-                            'i',
-                            { title: '\u5173\u95ED', className: 'iconfont' },
-                            '\uE6B9'
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'post_card' },
-                    this.state.tabs.map(function (v) {
-                        return _react2.default.createElement(Posts, {
-                            id: v.id,
-                            active: v.active,
-                            posts: v.posts,
-                            selectChange: function selectChange(event, id) {
-                                return _this11.selectChange(event, v.id);
-                            },
-                            textChange: function textChange(event, type, id) {
-                                return _this11.textChange(event, type, v.id);
-                            },
-                            jsonBeautify: function jsonBeautify(id) {
-                                return _this11.jsonBeautify(v.id);
-                            }
-                        });
-                    })
-                )
-            );
-        }
-    }]);
-
-    return TabCard;
-}(_react2.default.Component);
+// var eventProxy = require('eventproxy')();
 
 /*modal-reviseForm*/
-
-
-var ReviseForm = function (_React$Component5) {
-    _inherits(ReviseForm, _React$Component5);
+var ReviseForm = function (_React$Component) {
+    _inherits(ReviseForm, _React$Component);
 
     function ReviseForm(props) {
         _classCallCheck(this, ReviseForm);
 
-        var _this12 = _possibleConstructorReturn(this, (ReviseForm.__proto__ || Object.getPrototypeOf(ReviseForm)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ReviseForm.__proto__ || Object.getPrototypeOf(ReviseForm)).call(this, props));
 
-        _this12.state = {
-            categoryName: _this12.props.categoryName
+        _this.state = {
+            categoryName: _this.props.categoryName
         };
-        return _this12;
+        return _this;
     }
 
     _createClass(ReviseForm, [{
@@ -1799,7 +1050,7 @@ var ReviseForm = function (_React$Component5) {
     }, {
         key: 'render',
         value: function render() {
-            var _this13 = this;
+            var _this2 = this;
 
             return _react2.default.createElement(
                 'div',
@@ -1819,7 +1070,7 @@ var ReviseForm = function (_React$Component5) {
                         _react2.default.createElement(
                             'label',
                             { className: 'btn-close', onClick: function onClick() {
-                                    return _this13.handleCloseModal();
+                                    return _this2.handleCloseModal();
                                 } },
                             'X'
                         )
@@ -1837,7 +1088,7 @@ var ReviseForm = function (_React$Component5) {
                             ),
                             _react2.default.createElement('input', { type: 'text', value: this.state.categoryName,
                                 onChange: function onChange() {
-                                    return _this13.handleInputChange();
+                                    return _this2.handleInputChange();
                                 } })
                         ),
                         _react2.default.createElement(
@@ -1848,11 +1099,11 @@ var ReviseForm = function (_React$Component5) {
                                 null,
                                 _react2.default.createElement('input', { className: 'btn-confirm', type: 'submit', value: '\u786E\u5B9A',
                                     onClick: function onClick() {
-                                        return _this13.handleSubmit();
+                                        return _this2.handleSubmit();
                                     } }),
                                 _react2.default.createElement('input', { className: 'btn-cancel', type: 'button', value: '\u53D6\u6D88',
                                     onClick: function onClick() {
-                                        return _this13.handleCloseModal();
+                                        return _this2.handleCloseModal();
                                     } })
                             )
                         )
@@ -1868,12 +1119,11 @@ var ReviseForm = function (_React$Component5) {
 _reactDom2.default.render(_react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(SideBar, null),
-    _react2.default.createElement(TabCard, null)
+    _react2.default.createElement(_sideBar2.default, null)
 ), document.getElementById('container'));
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1885,7 +1135,7 @@ _reactDom2.default.render(_react2.default.createElement(
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var m=__webpack_require__(2),n=__webpack_require__(3),p=__webpack_require__(1);
+var m=__webpack_require__(3),n=__webpack_require__(4),p=__webpack_require__(1);
 function q(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var r={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function t(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}t.prototype.isReactComponent={};t.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?q("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};t.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function u(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}function v(){}v.prototype=t.prototype;var w=u.prototype=new v;w.constructor=u;m(w,t.prototype);w.isPureReactComponent=!0;function x(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}var y=x.prototype=new v;y.constructor=x;m(y,t.prototype);y.unstable_isAsyncReactComponent=!0;y.render=function(){return this.props.children};
@@ -1902,7 +1152,7 @@ version:"16.1.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurren
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1921,9 +1171,9 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(2);
+var _assign = __webpack_require__(3);
 var invariant = __webpack_require__(5);
-var emptyObject = __webpack_require__(3);
+var emptyObject = __webpack_require__(4);
 var warning = __webpack_require__(6);
 var emptyFunction = __webpack_require__(1);
 var checkPropTypes = __webpack_require__(7);
@@ -3253,7 +2503,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3272,52 +2522,6 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-function checkDCE() {
-  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
-  if (
-    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
-    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
-  ) {
-    return;
-  }
-  if (process.env.NODE_ENV !== 'production') {
-    // This branch is unreachable because this function is only called
-    // in production, but the condition is true only in development.
-    // Therefore if the branch is still here, dead code elimination wasn't
-    // properly applied.
-    // Don't change the message. React DevTools relies on it. Also make sure
-    // this message doesn't occur elsewhere in this function, or it will cause
-    // a false positive.
-    throw new Error('^_^');
-  }
-  try {
-    // Verify that the code above has been dead code eliminated (DCE'd).
-    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-  } catch (err) {
-    // DevTools shouldn't crash React, no matter what.
-    // We should still report in case we break this code.
-    console.error(err);
-  }
-}
-
-if (process.env.NODE_ENV === 'production') {
-  // DCE check should happen before ReactDOM bundle executes so that
-  // DevTools can report bad minification during injection.
-  checkDCE();
-  module.exports = __webpack_require__(19);
-} else {
-  module.exports = __webpack_require__(22);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3333,7 +2537,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(4),m=__webpack_require__(8),A=__webpack_require__(2),B=__webpack_require__(1),ca=__webpack_require__(9),da=__webpack_require__(10),ea=__webpack_require__(11),ha=__webpack_require__(12),ia=__webpack_require__(13),C=__webpack_require__(3);
+var aa=__webpack_require__(2),m=__webpack_require__(9),A=__webpack_require__(3),B=__webpack_require__(1),ca=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),ha=__webpack_require__(13),ia=__webpack_require__(14),C=__webpack_require__(4);
 function D(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:D("227");
 var la={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function qa(a,b){return(a&b)===b}
 var ra={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ra,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){sa.hasOwnProperty(f)?D("48",f):void 0;var g=f.toLowerCase(),k=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:qa(k,b.MUST_USE_PROPERTY),
@@ -3627,18 +2831,18 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(4);
+var React = __webpack_require__(2);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
-var ExecutionEnvironment = __webpack_require__(8);
-var _assign = __webpack_require__(2);
+var ExecutionEnvironment = __webpack_require__(9);
+var _assign = __webpack_require__(3);
 var emptyFunction$1 = __webpack_require__(1);
-var EventListener = __webpack_require__(9);
-var getActiveElement = __webpack_require__(10);
-var shallowEqual = __webpack_require__(11);
-var containsNode = __webpack_require__(12);
-var focusNode = __webpack_require__(13);
-var emptyObject = __webpack_require__(3);
+var EventListener = __webpack_require__(10);
+var getActiveElement = __webpack_require__(11);
+var shallowEqual = __webpack_require__(12);
+var containsNode = __webpack_require__(13);
+var focusNode = __webpack_require__(14);
+var emptyObject = __webpack_require__(4);
 var checkPropTypes = __webpack_require__(7);
 var hyphenateStyleName = __webpack_require__(23);
 var camelizeStyleName = __webpack_require__(25);
@@ -19173,1491 +18377,268 @@ module.exports = camelize;
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(8);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/*侧边栏*/
+var SideBar = function (_React$Component) {
+    _inherits(SideBar, _React$Component);
+
+    function SideBar() {
+        _classCallCheck(this, SideBar);
+
+        var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this));
+
+        _this.state = {
+            folders: []
+        };
+        return _this;
+    }
+
+    _createClass(SideBar, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var sideBar = this;
+            var getRequest = {};
+            var requestParams = JSON.stringify(getRequest);
+            var xmlhttp;
+            var url = 'http://127.0.0.1:3000/phoenix/getRequest';
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var result = JSON.parse(xmlhttp.responseText);
+
+                    var tree = {};
+                    result.data.forEach(function (v) {
+                        if (tree[v.categoryId]) {
+                            tree[v.categoryId].data.push(v);
+                        } else {
+                            tree[v.categoryId] = {};
+                            tree[v.categoryId].id = v.categoryId;
+                            tree[v.categoryId].name = v.categoryName;
+                            tree[v.categoryId].data = [];
+                            tree[v.categoryId].data.push(v);
+                        }
+                    });
+
+                    var folders = [];
+                    for (var x in tree) {
+                        folders.push(tree[x]);
+                    }
+
+                    sideBar.setState({
+                        folders: folders
+                    });
+                } else {}
+            };
+            xmlhttp.open("POST", url, true);
+            xmlhttp.send(requestParams);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'sideBar' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'filter' },
+                    _react2.default.createElement('input', { type: 'text', placeholder: 'Fliter' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row-box tabs' },
+                        _react2.default.createElement(
+                            'a',
+                            { className: 'active' },
+                            'Collections'
+                        ),
+                        _react2.default.createElement(
+                            'a',
+                            { style: { display: 'none' } },
+                            'History'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'folders' },
+                        this.state.folders.map(function (v, index) {
+                            var _this2 = this;
+
+                            return _react2.default.createElement(
+                                'ul',
+                                { key: index },
+                                _react2.default.createElement(
+                                    'a',
+                                    { onClick: function onClick() {
+                                            return _this2.collapseCategory(event, index);
+                                        } },
+                                    _react2.default.createElement(
+                                        'i',
+                                        { className: v.expand ? 'iconfont iconfont-expand' : 'iconfont iconfont-collapse' },
+                                        '\uE6A7'
+                                    ),
+                                    _react2.default.createElement(
+                                        'label',
+                                        null,
+                                        v.name
+                                    ),
+                                    _react2.default.createElement(
+                                        'i',
+                                        { className: 'iconfont iconfont-edit' },
+                                        '\uE69E'
+                                    ),
+                                    _react2.default.createElement(
+                                        'i',
+                                        { className: 'iconfont iconfont-delete' },
+                                        '\uE69D'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'ul',
+                                    { style: v.expand ? { display: 'block' } : { display: 'none' } },
+                                    v.data.map(function (request, index) {
+                                        var _this3 = this;
+
+                                        return _react2.default.createElement(
+                                            'li',
+                                            { key: index,
+                                                className: 'labelCursor',
+                                                onClick: function onClick() {
+                                                    return _this3.getRequest(event, request.requestId);
+                                                }
+                                            },
+                                            _react2.default.createElement(
+                                                'a',
+                                                { className: request.type == 'GET' ? 'type get' : 'type post' },
+                                                request.type
+                                            ),
+                                            _react2.default.createElement(
+                                                'a',
+                                                { className: 'title' },
+                                                request.requestName
+                                            )
+                                        );
+                                    }, this)
+                                )
+                            );
+                        }, this)
+                    )
+                ),
+                _react2.default.createElement(
+                    'a',
+                    { onClick: function onClick() {
+                            return _this4.addCategory();
+                        }, className: 'bread' },
+                    '+'
+                )
+            );
+        }
+    }, {
+        key: 'addCategory',
+        value: function addCategory() {
+            var folders = this.state.folders.slice();
+            var newCategory = {};
+            newCategory.name = 'Test Folder';
+            newCategory.data = [];
+            folders.push(newCategory);
+            this.setState({
+                folders: folders
+            });
+        }
+    }, {
+        key: 'collapseCategory',
+        value: function collapseCategory(event, index) {
+            var folders = this.state.folders.slice();
+            var object = event.srcElement ? event.srcElement : event.target;
+            if (object.tagName.toLowerCase() == 'i' && object.className.indexOf('iconfont-edit') > -1) {
+                _reactDom2.default.render(_react2.default.createElement(ReviseForm, { categoryName: folders[index].name }), document.getElementById('modal-revise'));
+                return;
+            } else if (object.tagName.toLowerCase() == 'i' && object.className.indexOf('iconfont-delete') > -1) {
+                alert('delete');
+                return;
+            } else {
+                folders[index].expand = !folders[index].expand;
+                this.setState({
+                    folders: folders
+                });
+            }
+        }
+    }, {
+        key: 'getRequest',
+        value: function getRequest(event, requestId) {
+            alert('get request');
+            // var requestParams = {
+            //     requestId: requestId
+            // };
+            // requestParams = JSON.stringify(requestParams);
+            // var xmlhttp;
+            // var url = 'http://127.0.0.1:3000/phoenix/getRequest';
+            // if (window.XMLHttpRequest){
+            //     xmlhttp=new XMLHttpRequest();
+            // }
+            // else{
+            //     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            // }
+            // xmlhttp.onreadystatechange=function(){
+            //     if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            //     {
+            //         var result = JSON.parse(xmlhttp.responseText);
+            //         console.log(result.data[0]);
+            //         // 发布 tab 事件
+            //         eventProxy.trigger('tab', result.data[0]);
+
+            //     }else{
+            //     }
+            // }
+            // xmlhttp.open("POST",url,true);
+            // xmlhttp.send(requestParams);
+        }
+    }]);
+
+    return SideBar;
+}(_react2.default.Component);
+
+exports.default = SideBar;
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(37);
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate, process) {var __WEBPACK_LOCAL_MODULE_0__, __WEBPACK_LOCAL_MODULE_0__module;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*global define*/
-!(function (name, definition) {
-  // Check define
-  var hasDefine = "function" === 'function',
-    // Check exports
-    hasExports = typeof module !== 'undefined' && module.exports;
-
-  if (hasDefine) {
-    // AMD Module or CMD Module
-    !(__WEBPACK_LOCAL_MODULE_0__module = { id: "eventproxy_debug", exports: {}, loaded: false }, __WEBPACK_LOCAL_MODULE_0__ = function () {return function () {};}.call(__WEBPACK_LOCAL_MODULE_0__module.exports, __webpack_require__, __WEBPACK_LOCAL_MODULE_0__module.exports, __WEBPACK_LOCAL_MODULE_0__module), __WEBPACK_LOCAL_MODULE_0__module.loaded = true, __WEBPACK_LOCAL_MODULE_0__ === undefined && (__WEBPACK_LOCAL_MODULE_0__ = __WEBPACK_LOCAL_MODULE_0__module.exports));
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__WEBPACK_LOCAL_MODULE_0__], __WEBPACK_AMD_DEFINE_FACTORY__ = (definition),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (hasExports) {
-    // Node.js Module
-    module.exports = definition(__webpack_require__(41)('eventproxy'));
-  } else {
-    // Assign to common namespaces or simply the global object (window)
-    this[name] = definition();
-  }
-})('EventProxy', function (debug) {
-  debug = debug || function () {};
-
-  /*!
-   * refs
-   */
-  var SLICE = Array.prototype.slice;
-  var CONCAT = Array.prototype.concat;
-  var ALL_EVENT = '__all__';
-
-  /**
-   * EventProxy. An implementation of task/event based asynchronous pattern.
-   * A module that can be mixed in to *any object* in order to provide it with custom events.
-   * You may `bind` or `unbind` a callback function to an event;
-   * `trigger`-ing an event fires all callbacks in succession.
-   * Examples:
-   * ```js
-   * var render = function (template, resources) {};
-   * var proxy = new EventProxy();
-   * proxy.assign("template", "l10n", render);
-   * proxy.trigger("template", template);
-   * proxy.trigger("l10n", resources);
-   * ```
-   */
-  var EventProxy = function () {
-    if (!(this instanceof EventProxy)) {
-      return new EventProxy();
-    }
-    this._callbacks = {};
-    this._fired = {};
-  };
-
-  /**
-   * Bind an event, specified by a string name, `ev`, to a `callback` function.
-   * Passing __ALL_EVENT__ will bind the callback to all events fired.
-   * Examples:
-   * ```js
-   * var proxy = new EventProxy();
-   * proxy.addListener("template", function (event) {
-   *   // TODO
-   * });
-   * ```
-   * @param {String} eventname Event name.
-   * @param {Function} callback Callback.
-   */
-  EventProxy.prototype.addListener = function (ev, callback) {
-    debug('Add listener for %s', ev);
-    this._callbacks[ev] = this._callbacks[ev] || [];
-    this._callbacks[ev].push(callback);
-    return this;
-  };
-  /**
-   * `addListener` alias, `bind`
-   */
-  EventProxy.prototype.bind = EventProxy.prototype.addListener;
-  /**
-   * `addListener` alias, `on`
-   */
-  EventProxy.prototype.on = EventProxy.prototype.addListener;
-  /**
-   * `addListener` alias, `subscribe`
-   */
-  EventProxy.prototype.subscribe = EventProxy.prototype.addListener;
-
-  /**
-   * Bind an event, but put the callback into head of all callbacks.
-   * @param {String} eventname Event name.
-   * @param {Function} callback Callback.
-   */
-  EventProxy.prototype.headbind = function (ev, callback) {
-    debug('Add listener for %s', ev);
-    this._callbacks[ev] = this._callbacks[ev] || [];
-    this._callbacks[ev].unshift(callback);
-    return this;
-  };
-
-  /**
-   * Remove one or many callbacks.
-   *
-   * - If `callback` is null, removes all callbacks for the event.
-   * - If `eventname` is null, removes all bound callbacks for all events.
-   * @param {String} eventname Event name.
-   * @param {Function} callback Callback.
-   */
-  EventProxy.prototype.removeListener = function (eventname, callback) {
-    var calls = this._callbacks;
-    if (!eventname) {
-      debug('Remove all listeners');
-      this._callbacks = {};
-    } else {
-      if (!callback) {
-        debug('Remove all listeners of %s', eventname);
-        calls[eventname] = [];
-      } else {
-        var list = calls[eventname];
-        if (list) {
-          var l = list.length;
-          for (var i = 0; i < l; i++) {
-            if (callback === list[i]) {
-              debug('Remove a listener of %s', eventname);
-              list[i] = null;
-            }
-          }
-        }
-      }
-    }
-    return this;
-  };
-  /**
-   * `removeListener` alias, unbind
-   */
-  EventProxy.prototype.unbind = EventProxy.prototype.removeListener;
-
-  /**
-   * Remove all listeners. It equals unbind()
-   * Just add this API for as same as Event.Emitter.
-   * @param {String} event Event name.
-   */
-  EventProxy.prototype.removeAllListeners = function (event) {
-    return this.unbind(event);
-  };
-
-  /**
-   * Bind the ALL_EVENT event
-   */
-  EventProxy.prototype.bindForAll = function (callback) {
-    this.bind(ALL_EVENT, callback);
-  };
-
-  /**
-   * Unbind the ALL_EVENT event
-   */
-  EventProxy.prototype.unbindForAll = function (callback) {
-    this.unbind(ALL_EVENT, callback);
-  };
-
-  /**
-   * Trigger an event, firing all bound callbacks. Callbacks are passed the
-   * same arguments as `trigger` is, apart from the event name.
-   * Listening for `"all"` passes the true event name as the first argument.
-   * @param {String} eventname Event name
-   * @param {Mix} data Pass in data
-   */
-  EventProxy.prototype.trigger = function (eventname, data) {
-    var list, ev, callback, i, l;
-    var both = 2;
-    var calls = this._callbacks;
-    debug('Emit event %s with data %j', eventname, data);
-    while (both--) {
-      ev = both ? eventname : ALL_EVENT;
-      list = calls[ev];
-      if (list) {
-        for (i = 0, l = list.length; i < l; i++) {
-          if (!(callback = list[i])) {
-            list.splice(i, 1);
-            i--;
-            l--;
-          } else {
-            var args = [];
-            var start = both ? 1 : 0;
-            for (var j = start; j < arguments.length; j++) {
-              args.push(arguments[j]);
-            }
-            callback.apply(this, args);
-          }
-        }
-      }
-    }
-    return this;
-  };
-
-  /**
-   * `trigger` alias
-   */
-  EventProxy.prototype.emit = EventProxy.prototype.trigger;
-  /**
-   * `trigger` alias
-   */
-  EventProxy.prototype.fire = EventProxy.prototype.trigger;
-
-  /**
-   * Bind an event like the bind method, but will remove the listener after it was fired.
-   * @param {String} ev Event name
-   * @param {Function} callback Callback
-   */
-  EventProxy.prototype.once = function (ev, callback) {
-    var self = this;
-    var wrapper = function () {
-      callback.apply(self, arguments);
-      self.unbind(ev, wrapper);
-    };
-    this.bind(ev, wrapper);
-    return this;
-  };
-
-  var later = (typeof setImmediate !== 'undefined' && setImmediate) ||
-    (typeof process !== 'undefined' && process.nextTick) || function (fn) {
-    setTimeout(fn, 0);
-  };
-
-  /**
-   * emitLater
-   * make emit async
-   */
-  EventProxy.prototype.emitLater = function () {
-    var self = this;
-    var args = arguments;
-    later(function () {
-      self.trigger.apply(self, args);
-    });
-  };
-
-  /**
-   * Bind an event, and trigger it immediately.
-   * @param {String} ev Event name.
-   * @param {Function} callback Callback.
-   * @param {Mix} data The data that will be passed to calback as arguments.
-   */
-  EventProxy.prototype.immediate = function (ev, callback, data) {
-    this.bind(ev, callback);
-    this.trigger(ev, data);
-    return this;
-  };
-  /**
-   * `immediate` alias
-   */
-  EventProxy.prototype.asap = EventProxy.prototype.immediate;
-
-  var _assign = function (eventname1, eventname2, cb, once) {
-    var proxy = this;
-    var argsLength = arguments.length;
-    var times = 0;
-    var flag = {};
-
-    // Check the arguments length.
-    if (argsLength < 3) {
-      return this;
-    }
-
-    var events = SLICE.call(arguments, 0, -2);
-    var callback = arguments[argsLength - 2];
-    var isOnce = arguments[argsLength - 1];
-
-    // Check the callback type.
-    if (typeof callback !== "function") {
-      return this;
-    }
-    debug('Assign listener for events %j, once is %s', events, !!isOnce);
-    var bind = function (key) {
-      var method = isOnce ? "once" : "bind";
-      proxy[method](key, function (data) {
-        proxy._fired[key] = proxy._fired[key] || {};
-        proxy._fired[key].data = data;
-        if (!flag[key]) {
-          flag[key] = true;
-          times++;
-        }
-      });
-    };
-
-    var length = events.length;
-    for (var index = 0; index < length; index++) {
-      bind(events[index]);
-    }
-
-    var _all = function (event) {
-      if (times < length) {
-        return;
-      }
-      if (!flag[event]) {
-        return;
-      }
-      var data = [];
-      for (var index = 0; index < length; index++) {
-        data.push(proxy._fired[events[index]].data);
-      }
-      if (isOnce) {
-        proxy.unbindForAll(_all);
-      }
-      debug('Events %j all emited with data %j', events, data);
-      callback.apply(null, data);
-    };
-    proxy.bindForAll(_all);
-  };
-
-  /**
-   * Assign some events, after all events were fired, the callback will be executed once.
-   *
-   * Examples:
-   * ```js
-   * proxy.all(ev1, ev2, callback);
-   * proxy.all([ev1, ev2], callback);
-   * proxy.all(ev1, [ev2, ev3], callback);
-   * ```
-   * @param {String} eventname1 First event name.
-   * @param {String} eventname2 Second event name.
-   * @param {Function} callback Callback, that will be called after predefined events were fired.
-   */
-  EventProxy.prototype.all = function (eventname1, eventname2, callback) {
-    var args = CONCAT.apply([], arguments);
-    args.push(true);
-    _assign.apply(this, args);
-    return this;
-  };
-  /**
-   * `all` alias
-   */
-  EventProxy.prototype.assign = EventProxy.prototype.all;
-
-  /**
-   * Assign the only one 'error' event handler.
-   * @param {Function(err)} callback
-   */
-  EventProxy.prototype.fail = function (callback) {
-    var that = this;
-
-    that.once('error', function () {
-      that.unbind();
-      // put all arguments to the error handler
-      // fail(function(err, args1, args2, ...){})
-      callback.apply(null, arguments);
-    });
-    return this;
-  };
-
-  /**
-   * A shortcut of ep#emit('error', err)
-   */
-  EventProxy.prototype.throw = function () {
-    var that = this;
-    that.emit.apply(that, ['error'].concat(SLICE.call(arguments)));
-  };
-
-  /**
-   * Assign some events, after all events were fired, the callback will be executed first time.
-   * Then any event that predefined be fired again, the callback will executed with the newest data.
-   * Examples:
-   * ```js
-   * proxy.tail(ev1, ev2, callback);
-   * proxy.tail([ev1, ev2], callback);
-   * proxy.tail(ev1, [ev2, ev3], callback);
-   * ```
-   * @param {String} eventname1 First event name.
-   * @param {String} eventname2 Second event name.
-   * @param {Function} callback Callback, that will be called after predefined events were fired.
-   */
-  EventProxy.prototype.tail = function () {
-    var args = CONCAT.apply([], arguments);
-    args.push(false);
-    _assign.apply(this, args);
-    return this;
-  };
-  /**
-   * `tail` alias, assignAll
-   */
-  EventProxy.prototype.assignAll = EventProxy.prototype.tail;
-  /**
-   * `tail` alias, assignAlways
-   */
-  EventProxy.prototype.assignAlways = EventProxy.prototype.tail;
-
-  /**
-   * The callback will be executed after the event be fired N times.
-   * @param {String} eventname Event name.
-   * @param {Number} times N times.
-   * @param {Function} callback Callback, that will be called after event was fired N times.
-   */
-  EventProxy.prototype.after = function (eventname, times, callback) {
-    if (times === 0) {
-      callback.call(null, []);
-      return this;
-    }
-    var proxy = this,
-      firedData = [];
-    this._after = this._after || {};
-    var group = eventname + '_group';
-    this._after[group] = {
-      index: 0,
-      results: []
-    };
-    debug('After emit %s times, event %s\'s listenner will execute', times, eventname);
-    var all = function (name, data) {
-      if (name === eventname) {
-        times--;
-        firedData.push(data);
-        if (times < 1) {
-          debug('Event %s was emit %s, and execute the listenner', eventname, times);
-          proxy.unbindForAll(all);
-          callback.apply(null, [firedData]);
-        }
-      }
-      if (name === group) {
-        times--;
-        proxy._after[group].results[data.index] = data.result;
-        if (times < 1) {
-          debug('Event %s was emit %s, and execute the listenner', eventname, times);
-          proxy.unbindForAll(all);
-          callback.call(null, proxy._after[group].results);
-        }
-      }
-    };
-    proxy.bindForAll(all);
-    return this;
-  };
-
-  /**
-   * The `after` method's helper. Use it will return ordered results.
-   * If you need manipulate result, you need callback
-   * Examples:
-   * ```js
-   * var ep = new EventProxy();
-   * ep.after('file', files.length, function (list) {
-   *   // Ordered results
-   * });
-   * for (var i = 0; i < files.length; i++) {
-   *   fs.readFile(files[i], 'utf-8', ep.group('file'));
-   * }
-   * ```
-   * @param {String} eventname Event name, shoule keep consistent with `after`.
-   * @param {Function} callback Callback function, should return the final result.
-   */
-  EventProxy.prototype.group = function (eventname, callback) {
-    var that = this;
-    var group = eventname + '_group';
-    var index = that._after[group].index;
-    that._after[group].index++;
-    return function (err, data) {
-      if (err) {
-        // put all arguments to the error handler
-        return that.emit.apply(that, ['error'].concat(SLICE.call(arguments)));
-      }
-      that.emit(group, {
-        index: index,
-        // callback(err, args1, args2, ...)
-        result: callback ? callback.apply(null, SLICE.call(arguments, 1)) : data
-      });
-    };
-  };
-
-  /**
-   * The callback will be executed after any registered event was fired. It only executed once.
-   * @param {String} eventname1 Event name.
-   * @param {String} eventname2 Event name.
-   * @param {Function} callback The callback will get a map that has data and eventname attributes.
-   */
-  EventProxy.prototype.any = function () {
-    var proxy = this,
-      callback = arguments[arguments.length - 1],
-      events = SLICE.call(arguments, 0, -1),
-      _eventname = events.join("_");
-
-    debug('Add listenner for Any of events %j emit', events);
-    proxy.once(_eventname, callback);
-
-    var _bind = function (key) {
-      proxy.bind(key, function (data) {
-        debug('One of events %j emited, execute the listenner');
-        proxy.trigger(_eventname, {"data": data, eventName: key});
-      });
-    };
-
-    for (var index = 0; index < events.length; index++) {
-      _bind(events[index]);
-    }
-  };
-
-  /**
-   * The callback will be executed when the event name not equals with assigned event.
-   * @param {String} eventname Event name.
-   * @param {Function} callback Callback.
-   */
-  EventProxy.prototype.not = function (eventname, callback) {
-    var proxy = this;
-    debug('Add listenner for not event %s', eventname);
-    proxy.bindForAll(function (name, data) {
-      if (name !== eventname) {
-        debug('listenner execute of event %s emit, but not event %s.', name, eventname);
-        callback(data);
-      }
-    });
-  };
-
-  /**
-   * Success callback wrapper, will handler err for you.
-   *
-   * ```js
-   * fs.readFile('foo.txt', ep.done('content'));
-   *
-   * // equal to =>
-   *
-   * fs.readFile('foo.txt', function (err, content) {
-   *   if (err) {
-   *     return ep.emit('error', err);
-   *   }
-   *   ep.emit('content', content);
-   * });
-   * ```
-   *
-   * ```js
-   * fs.readFile('foo.txt', ep.done('content', function (content) {
-   *   return content.trim();
-   * }));
-   *
-   * // equal to =>
-   *
-   * fs.readFile('foo.txt', function (err, content) {
-   *   if (err) {
-   *     return ep.emit('error', err);
-   *   }
-   *   ep.emit('content', content.trim());
-   * });
-   * ```
-   * @param {Function|String} handler, success callback or event name will be emit after callback.
-   * @return {Function}
-   */
-  EventProxy.prototype.done = function (handler, callback) {
-    var that = this;
-    return function (err, data) {
-      if (err) {
-        // put all arguments to the error handler
-        return that.emit.apply(that, ['error'].concat(SLICE.call(arguments)));
-      }
-
-      // callback(err, args1, args2, ...)
-      var args = SLICE.call(arguments, 1);
-
-      if (typeof handler === 'string') {
-        // getAsync(query, ep.done('query'));
-        // or
-        // getAsync(query, ep.done('query', function (data) {
-        //   return data.trim();
-        // }));
-        if (callback) {
-          // only replace the args when it really return a result
-          return that.emit(handler, callback.apply(null, args));
-        } else {
-          // put all arguments to the done handler
-          //ep.done('some');
-          //ep.on('some', function(args1, args2, ...){});
-          return that.emit.apply(that, [handler].concat(args));
-        }
-      }
-
-      // speed improve for mostly case: `callback(err, data)`
-      if (arguments.length <= 2) {
-        return handler(data);
-      }
-
-      // callback(err, args1, args2, ...)
-      handler.apply(null, args);
-    };
-  };
-
-  /**
-   * make done async
-   * @return {Function} delay done
-   */
-  EventProxy.prototype.doneLater = function (handler, callback) {
-    var _doneHandler = this.done(handler, callback);
-    return function (err, data) {
-      var args = arguments;
-      later(function () {
-        _doneHandler.apply(null, args);
-      });
-    };
-  };
-
-  /**
-   * Create a new EventProxy
-   * Examples:
-   * ```js
-   * var ep = EventProxy.create();
-   * ep.assign('user', 'articles', function(user, articles) {
-   *   // do something...
-   * });
-   * // or one line ways: Create EventProxy and Assign
-   * var ep = EventProxy.create('user', 'articles', function(user, articles) {
-   *   // do something...
-   * });
-   * ```
-   * @return {EventProxy} EventProxy instance
-   */
-  EventProxy.create = function () {
-    var ep = new EventProxy();
-    var args = CONCAT.apply([], arguments);
-    if (args.length) {
-      var errorHandler = args[args.length - 1];
-      var callback = args[args.length - 2];
-      if (typeof errorHandler === 'function' && typeof callback === 'function') {
-        args.pop();
-        ep.fail(errorHandler);
-      }
-      ep.assign.apply(ep, args);
-    }
-    return ep;
-  };
-
-  // Backwards compatibility
-  EventProxy.EventProxy = EventProxy;
-
-  return EventProxy;
-});
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38).setImmediate, __webpack_require__(0)))
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(39);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40), __webpack_require__(0)))
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * This is the web browser implementation of `debug()`.
- *
- * Expose `debug()` as the module.
- */
-
-exports = module.exports = __webpack_require__(42);
-exports.log = log;
-exports.formatArgs = formatArgs;
-exports.save = save;
-exports.load = load;
-exports.useColors = useColors;
-exports.storage = 'undefined' != typeof chrome
-               && 'undefined' != typeof chrome.storage
-                  ? chrome.storage.local
-                  : localstorage();
-
-/**
- * Colors.
- */
-
-exports.colors = [
-  'lightseagreen',
-  'forestgreen',
-  'goldenrod',
-  'dodgerblue',
-  'darkorchid',
-  'crimson'
-];
-
-/**
- * Currently only WebKit-based Web Inspectors, Firefox >= v31,
- * and the Firebug extension (any Firefox version) are known
- * to support "%c" CSS customizations.
- *
- * TODO: add a `localStorage` variable to explicitly enable/disable colors
- */
-
-function useColors() {
-  // NB: In an Electron preload script, document will be defined but not fully
-  // initialized. Since we know we're in Chrome, we'll just detect this case
-  // explicitly
-  if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
-    return true;
-  }
-
-  // is webkit? http://stackoverflow.com/a/16459606/376773
-  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-  return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
-    // is firebug? http://stackoverflow.com/a/398120/376773
-    (typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
-    // is firefox >= v31?
-    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
-    // double check webkit in userAgent just in case we are in a worker
-    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
-}
-
-/**
- * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
- */
-
-exports.formatters.j = function(v) {
-  try {
-    return JSON.stringify(v);
-  } catch (err) {
-    return '[UnexpectedJSONParseError]: ' + err.message;
-  }
-};
-
-
-/**
- * Colorize log arguments if enabled.
- *
- * @api public
- */
-
-function formatArgs(args) {
-  var useColors = this.useColors;
-
-  args[0] = (useColors ? '%c' : '')
-    + this.namespace
-    + (useColors ? ' %c' : ' ')
-    + args[0]
-    + (useColors ? '%c ' : ' ')
-    + '+' + exports.humanize(this.diff);
-
-  if (!useColors) return;
-
-  var c = 'color: ' + this.color;
-  args.splice(1, 0, c, 'color: inherit')
-
-  // the final "%c" is somewhat tricky, because there could be other
-  // arguments passed either before or after the %c, so we need to
-  // figure out the correct index to insert the CSS into
-  var index = 0;
-  var lastC = 0;
-  args[0].replace(/%[a-zA-Z%]/g, function(match) {
-    if ('%%' === match) return;
-    index++;
-    if ('%c' === match) {
-      // we only are interested in the *last* %c
-      // (the user may have provided their own)
-      lastC = index;
-    }
-  });
-
-  args.splice(lastC, 0, c);
-}
-
-/**
- * Invokes `console.log()` when available.
- * No-op when `console.log` is not a "function".
- *
- * @api public
- */
-
-function log() {
-  // this hackery is required for IE8/9, where
-  // the `console.log` function doesn't have 'apply'
-  return 'object' === typeof console
-    && console.log
-    && Function.prototype.apply.call(console.log, console, arguments);
-}
-
-/**
- * Save `namespaces`.
- *
- * @param {String} namespaces
- * @api private
- */
-
-function save(namespaces) {
-  try {
-    if (null == namespaces) {
-      exports.storage.removeItem('debug');
-    } else {
-      exports.storage.debug = namespaces;
-    }
-  } catch(e) {}
-}
-
-/**
- * Load `namespaces`.
- *
- * @return {String} returns the previously persisted debug modes
- * @api private
- */
-
-function load() {
-  var r;
-  try {
-    r = exports.storage.debug;
-  } catch(e) {}
-
-  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-  if (!r && typeof process !== 'undefined' && 'env' in process) {
-    r = process.env.DEBUG;
-  }
-
-  return r;
-}
-
-/**
- * Enable namespaces listed in `localStorage.debug` initially.
- */
-
-exports.enable(load());
-
-/**
- * Localstorage attempts to return the localstorage.
- *
- * This is necessary because safari throws
- * when a user disables cookies/localstorage
- * and you attempt to access it.
- *
- * @return {LocalStorage}
- * @api private
- */
-
-function localstorage() {
-  try {
-    return window.localStorage;
-  } catch (e) {}
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/**
- * This is the common logic for both the Node.js and web browser
- * implementations of `debug()`.
- *
- * Expose `debug()` as the module.
- */
-
-exports = module.exports = createDebug.debug = createDebug['default'] = createDebug;
-exports.coerce = coerce;
-exports.disable = disable;
-exports.enable = enable;
-exports.enabled = enabled;
-exports.humanize = __webpack_require__(43);
-
-/**
- * The currently active debug mode names, and names to skip.
- */
-
-exports.names = [];
-exports.skips = [];
-
-/**
- * Map of special "%n" handling functions, for the debug "format" argument.
- *
- * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
- */
-
-exports.formatters = {};
-
-/**
- * Previous log timestamp.
- */
-
-var prevTime;
-
-/**
- * Select a color.
- * @param {String} namespace
- * @return {Number}
- * @api private
- */
-
-function selectColor(namespace) {
-  var hash = 0, i;
-
-  for (i in namespace) {
-    hash  = ((hash << 5) - hash) + namespace.charCodeAt(i);
-    hash |= 0; // Convert to 32bit integer
-  }
-
-  return exports.colors[Math.abs(hash) % exports.colors.length];
-}
-
-/**
- * Create a debugger with the given `namespace`.
- *
- * @param {String} namespace
- * @return {Function}
- * @api public
- */
-
-function createDebug(namespace) {
-
-  function debug() {
-    // disabled?
-    if (!debug.enabled) return;
-
-    var self = debug;
-
-    // set `diff` timestamp
-    var curr = +new Date();
-    var ms = curr - (prevTime || curr);
-    self.diff = ms;
-    self.prev = prevTime;
-    self.curr = curr;
-    prevTime = curr;
-
-    // turn the `arguments` into a proper Array
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-
-    args[0] = exports.coerce(args[0]);
-
-    if ('string' !== typeof args[0]) {
-      // anything else let's inspect with %O
-      args.unshift('%O');
-    }
-
-    // apply any `formatters` transformations
-    var index = 0;
-    args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
-      // if we encounter an escaped % then don't increase the array index
-      if (match === '%%') return match;
-      index++;
-      var formatter = exports.formatters[format];
-      if ('function' === typeof formatter) {
-        var val = args[index];
-        match = formatter.call(self, val);
-
-        // now we need to remove `args[index]` since it's inlined in the `format`
-        args.splice(index, 1);
-        index--;
-      }
-      return match;
-    });
-
-    // apply env-specific formatting (colors, etc.)
-    exports.formatArgs.call(self, args);
-
-    var logFn = debug.log || exports.log || console.log.bind(console);
-    logFn.apply(self, args);
-  }
-
-  debug.namespace = namespace;
-  debug.enabled = exports.enabled(namespace);
-  debug.useColors = exports.useColors();
-  debug.color = selectColor(namespace);
-
-  // env-specific initialization logic for debug instances
-  if ('function' === typeof exports.init) {
-    exports.init(debug);
-  }
-
-  return debug;
-}
-
-/**
- * Enables a debug mode by namespaces. This can include modes
- * separated by a colon and wildcards.
- *
- * @param {String} namespaces
- * @api public
- */
-
-function enable(namespaces) {
-  exports.save(namespaces);
-
-  exports.names = [];
-  exports.skips = [];
-
-  var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
-  var len = split.length;
-
-  for (var i = 0; i < len; i++) {
-    if (!split[i]) continue; // ignore empty strings
-    namespaces = split[i].replace(/\*/g, '.*?');
-    if (namespaces[0] === '-') {
-      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
-    } else {
-      exports.names.push(new RegExp('^' + namespaces + '$'));
-    }
-  }
-}
-
-/**
- * Disable debug output.
- *
- * @api public
- */
-
-function disable() {
-  exports.enable('');
-}
-
-/**
- * Returns true if the given mode name is enabled, false otherwise.
- *
- * @param {String} name
- * @return {Boolean}
- * @api public
- */
-
-function enabled(name) {
-  var i, len;
-  for (i = 0, len = exports.skips.length; i < len; i++) {
-    if (exports.skips[i].test(name)) {
-      return false;
-    }
-  }
-  for (i = 0, len = exports.names.length; i < len; i++) {
-    if (exports.names[i].test(name)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/**
- * Coerce `val`.
- *
- * @param {Mixed} val
- * @return {Mixed}
- * @api private
- */
-
-function coerce(val) {
-  if (val instanceof Error) return val.stack || val.message;
-  return val;
-}
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-/**
- * Helpers.
- */
-
-var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var y = d * 365.25;
-
-/**
- * Parse or format the given `val`.
- *
- * Options:
- *
- *  - `long` verbose formatting [false]
- *
- * @param {String|Number} val
- * @param {Object} [options]
- * @throws {Error} throw an error if val is not a non-empty string or a number
- * @return {String|Number}
- * @api public
- */
-
-module.exports = function(val, options) {
-  options = options || {};
-  var type = typeof val;
-  if (type === 'string' && val.length > 0) {
-    return parse(val);
-  } else if (type === 'number' && isNaN(val) === false) {
-    return options.long ? fmtLong(val) : fmtShort(val);
-  }
-  throw new Error(
-    'val is not a non-empty string or a valid number. val=' +
-      JSON.stringify(val)
-  );
-};
-
-/**
- * Parse the given `str` and return milliseconds.
- *
- * @param {String} str
- * @return {Number}
- * @api private
- */
-
-function parse(str) {
-  str = String(str);
-  if (str.length > 100) {
-    return;
-  }
-  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
-    str
-  );
-  if (!match) {
-    return;
-  }
-  var n = parseFloat(match[1]);
-  var type = (match[2] || 'ms').toLowerCase();
-  switch (type) {
-    case 'years':
-    case 'year':
-    case 'yrs':
-    case 'yr':
-    case 'y':
-      return n * y;
-    case 'days':
-    case 'day':
-    case 'd':
-      return n * d;
-    case 'hours':
-    case 'hour':
-    case 'hrs':
-    case 'hr':
-    case 'h':
-      return n * h;
-    case 'minutes':
-    case 'minute':
-    case 'mins':
-    case 'min':
-    case 'm':
-      return n * m;
-    case 'seconds':
-    case 'second':
-    case 'secs':
-    case 'sec':
-    case 's':
-      return n * s;
-    case 'milliseconds':
-    case 'millisecond':
-    case 'msecs':
-    case 'msec':
-    case 'ms':
-      return n;
-    default:
-      return undefined;
-  }
-}
-
-/**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtShort(ms) {
-  if (ms >= d) {
-    return Math.round(ms / d) + 'd';
-  }
-  if (ms >= h) {
-    return Math.round(ms / h) + 'h';
-  }
-  if (ms >= m) {
-    return Math.round(ms / m) + 'm';
-  }
-  if (ms >= s) {
-    return Math.round(ms / s) + 's';
-  }
-  return ms + 'ms';
-}
-
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtLong(ms) {
-  return plural(ms, d, 'day') ||
-    plural(ms, h, 'hour') ||
-    plural(ms, m, 'minute') ||
-    plural(ms, s, 'second') ||
-    ms + ' ms';
-}
-
-/**
- * Pluralization helper.
- */
-
-function plural(ms, n, name) {
-  if (ms < n) {
-    return;
-  }
-  if (ms < n * 1.5) {
-    return Math.floor(ms / n) + ' ' + name;
-  }
-  return Math.ceil(ms / n) + ' ' + name + 's';
-}
-
 
 /***/ })
 /******/ ]);
