@@ -131,7 +131,7 @@ class SideBar extends React.Component{
     }
 
     getRequest(event, requestId){
-        alert('get request');
+        alert('get request!');
         // var requestParams = {
         //     requestId: requestId
         // };

@@ -4,17 +4,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SideBar from '../jsx/components/sideBar';
 import ReviseForm from '../jsx/components/reviseForm';
-// import TabCard from '../jsx/components/tabCard';
+import TabCard from '../jsx/components/tabCard';
 
-
-// var eventProxy = require('eventproxy')();
-
-
-
+var eventProxy = require('eventproxy')();
 ReactDOM.render(
     <div>
         <SideBar />
-        {/* <TabCard /> */}
+        <TabCard />
     </div>,
     document.getElementById('container')
 );
