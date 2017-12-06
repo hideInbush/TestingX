@@ -19230,6 +19230,8 @@ var TabCard = function (_React$Component3) {
     }, {
         key: 'sendRequest',
         value: function sendRequest(id) {
+            var self = this;
+
             var type = this.state.tabs[id]['posts']['httpType'];
             var url = this.state.tabs[id]['posts']['url'];
             var params = {};
@@ -19239,14 +19241,37 @@ var TabCard = function (_React$Component3) {
             params = JSON.stringify(params);
             $.ajax({
                 type: 'post',
-                url: '/transmit',
+                url: 'http://127.0.0.1:8989',
                 data: params,
                 success: function success(data) {
                     var result = JSON.parse(data);
-                    document.getElementById("responseText").innerHTML = posts.syntaxHighlight(JSON.stringify(result, null, 4));
+                    document.getElementById("responseText").innerHTML = self.syntaxHighlight(JSON.stringify(result, null, 4));
                     // document.getElementById("responseHeader").innerHTML = header;
                 },
                 error: function error() {}
+            });
+        }
+
+        /*json语法高亮*/
+
+    }, {
+        key: 'syntaxHighlight',
+        value: function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
             });
         }
     }, {

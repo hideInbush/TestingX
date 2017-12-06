@@ -420,6 +420,8 @@ class TabCard extends React.Component{
     }
 
     sendRequest(id){
+        var self = this;
+
         var type = this.state.tabs[id]['posts']['httpType'];
         var url = this.state.tabs[id]['posts']['url'];
         var params = {};
@@ -429,16 +431,36 @@ class TabCard extends React.Component{
         params = JSON.stringify(params);
         $.ajax({
             type: 'post',
-            url: '/transmit',
+            url: 'http://127.0.0.1:8989',
             data: params,
             success: function(data){
                 var result = JSON.parse(data);
-                document.getElementById("responseText").innerHTML = posts.syntaxHighlight(JSON.stringify(result, null ,4));
+                document.getElementById("responseText").innerHTML = self.syntaxHighlight(JSON.stringify(result, null ,4));
                 // document.getElementById("responseHeader").innerHTML = header;
             }, 
             error: function(){
             }
         })
+    }
+
+    /*json语法高亮*/
+    syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
     }
 
     render(){
