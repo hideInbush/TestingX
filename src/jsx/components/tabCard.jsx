@@ -422,11 +422,14 @@ class TabCard extends React.Component{
     sendRequest(id){
         var type = this.state.tabs[id]['posts']['httpType'];
         var url = this.state.tabs[id]['posts']['url'];
-        var params = this.state.tabs[id]['posts']['requestParams'] || '';
+        var params = {};
+        params.type = type;
+        params.url = url;
+        params.request = this.state.tabs[id]['posts']['requestParams'] || '';
         params = JSON.stringify(params);
         $.ajax({
-            type: type,
-            url: url,
+            type: 'post',
+            url: '/transmit',
             data: params,
             success: function(data){
                 var result = JSON.parse(data);
