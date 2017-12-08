@@ -21,6 +21,11 @@ http.createServer(function (request, response) {
             var options = {
             　　 method: params.type,
                 url: params.url,
+                json: true,
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify(params.param)
             };
             
             req(options, function (err, res, body) {
