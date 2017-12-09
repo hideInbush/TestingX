@@ -1,14 +1,13 @@
 import React from 'react';
 
 var jq = require("jquery")();
-console.log(jq);
 
 /**选项卡 */
 class Tab extends React.Component{
     render(){
         var className = this.props.active ? 'centerAlign textEllipsis post_tabs-actived' : 'centerAlign textEllipsis';
         return (
-            <a onClick={ () => this.props.onClick() } className={className} >
+            <a onClick={ (event) => this.props.onClick(event) } className={className} >
                 <i className="iconfont">&#xe69a;</i>
                 {this.props.name}
             </a>
@@ -75,10 +74,10 @@ class Posts extends React.Component{
                                         className={this.state.responseTabs[1].active ? 'tabs_items-actived' : ''}>Header</a>
                             </div>
                             <div className="content" id="responseContent">
-                                <pre id="responseText" 
-                                        className={this.state.responseTabs[0].active ? '' : 'displayNone'}/>
-                                <pre id="responseHeader"
-                                        className={this.state.responseTabs[1].active ? '' : 'displayNone'}/>
+                                <pre id={'responseText_'+this.props.id} 
+                                    className={this.state.responseTabs[0].active ? 'responseText' : 'displayNone responseText'}/>
+                                <pre id={'responseHeader_'+this.props.id} 
+                                    className={this.state.responseTabs[1].active ? 'responseHeader' : 'displayNone responseHeader'}/>
                             </div>
                         </div>
                     </div>
@@ -110,56 +109,6 @@ class Posts extends React.Component{
                 })
                 break;
         }
-    }
-
-    requestSend() {
-        // var url = this.state.url;
-        // var requestParams = JSON.stringify(JSON.parse(this.state.requestParams));
-
-        console.log(this.state);
-        return;
-        
-        var params = JSON.stringify({});
-        $.ajax({
-            type: "POST",
-            url: './index.php',
-            data: params,
-            success: function(data){
-                var result = JSON.parse(data);
-                document.getElementById("responseText").innerHTML = posts.syntaxHighlight(JSON.stringify(result, null ,4));
-                // document.getElementById("responseHeader").innerHTML = header;
-            }, 
-            error: function(){
-            }
-        })
-
-
-        var posts = this;
-
-        var xmlhttp;
-        var url = "./index.php";
-        if (window.XMLHttpRequest){
-            xmlhttp=new XMLHttpRequest();
-        }
-        else{
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            {
-                var header = xmlhttp.getAllResponseHeaders();
-                var data = xmlhttp.responseText;
-                // posts.setState({
-                //     responseParams: JSON.stringify(JSON.parse(data), null, 4),
-                //     responseHeader: header
-                // })
-                
-            }else{
-            }
-        }
-        xmlhttp.open("GET",url,true);
-        xmlhttp.send();
-        
     }
 
     requestSave(){
@@ -235,11 +184,11 @@ class TabCard extends React.Component{
             tabs: [
                 {
                     id:0, 
-                    name: "测试接口1", 
+                    name: "测试接口", 
                     active:true, 
                     posts: {
                         httpType : 'POST',
-                        url : null,
+                        url : '/libinterview',
                         description :  null,
                         requestParams : null,
                         requestHeader : null,
@@ -282,7 +231,7 @@ class TabCard extends React.Component{
         // });
     }
 
-    handleTabClick(event,id){
+    handleTabClick(event, id){
         /*清楚所有active*/
         var obj = event.srcElement ? event.srcElement : event.target;
         if(obj.className.indexOf('iconfont') == -1){
@@ -315,14 +264,14 @@ class TabCard extends React.Component{
             if(tabs.length == 0){
                 var posts = {
                     httpType : 'POST',
-                    url : null,
+                    url : '/libinterview',
                     desc :  null,
                     requestParams : null,
                     requestHeader : null,
                     responseParams : null,
                     responseHeader : null
                 };
-                tabs = [{id:1, name: "测试接口1", active:true, posts: posts}];
+                tabs = [{id:0, name: "测试接口", active:true, posts: posts}];
             }
             this.setState({
                 tabs: tabs
@@ -333,18 +282,21 @@ class TabCard extends React.Component{
 
     handleAddTabs(){
         var tabs = this.state.tabs.slice();
+        tabs.forEach(function(v,i,array){
+            v.active = false;
+        })
         var newId = parseInt(tabs[tabs.length-1].id) + 1;
         var newName = '测试接口' + newId;
         var posts = {
             httpType : 'POST',
-            url : null,
+            url : '/libinterview',
             desc :  null,
             requestParams : null,
             requestHeader : null,
             responseParams : null,
             responseHeader : null
         };
-        tabs.push({id:newId, name:newName, active:false, posts: posts});
+        tabs.push({id:newId, name:newName, active:true, posts: posts});
         this.setState({
             tabs: tabs
         })
@@ -426,7 +378,6 @@ class TabCard extends React.Component{
         var url = this.state.tabs[id]['posts']['url'];
         var params = {};
         eval("params = "+ this.state.tabs[id]['posts']['requestParams']);
-        console.log(params);
         params = JSON.stringify(params);
         $.ajax({
             type: type,
@@ -436,10 +387,13 @@ class TabCard extends React.Component{
             contentType: 'application/json',
             success: function(data){
                 var result = JSON.parse(data);
-                document.getElementById("responseText").innerHTML = self.syntaxHighlight(JSON.stringify(result, null ,4));
-                // document.getElementById("responseHeader").innerHTML = header;
+                document.getElementById("responseText_"+id).innerHTML = self.syntaxHighlight(JSON.stringify(result, null ,4));
             }, 
             error: function(){
+            }, 
+            complete: function(xhr){
+                var header = xhr.getAllResponseHeaders();
+                document.getElementById("responseHeader_"+id).innerHTML = header;
             }
         })
     }
@@ -471,7 +425,8 @@ class TabCard extends React.Component{
                     {this.state.tabs.map( (v, i)=> 
                         <Tab 
                             key={i}
-                            onClick={() => this.handleTabClick(event, v.id)} 
+                            selectChange={(event, id) => this.selectChange(event, v.id)}
+                            onClick={(event, id) => this.handleTabClick(event, v.id)} 
                             name={v.name} 
                             active={v.active} 
                             id={v.id} 

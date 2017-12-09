@@ -18688,7 +18688,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var jq = __webpack_require__(30)();
-console.log(jq);
 
 /**选项卡 */
 
@@ -18709,8 +18708,8 @@ var Tab = function (_React$Component) {
             var className = this.props.active ? 'centerAlign textEllipsis post_tabs-actived' : 'centerAlign textEllipsis';
             return _react2.default.createElement(
                 'a',
-                { onClick: function onClick() {
-                        return _this2.props.onClick();
+                { onClick: function onClick(event) {
+                        return _this2.props.onClick(event);
                     }, className: className },
                 _react2.default.createElement(
                     'i',
@@ -18877,10 +18876,10 @@ var Posts = function (_React$Component2) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'content', id: 'responseContent' },
-                                _react2.default.createElement('pre', { id: 'responseText',
-                                    className: this.state.responseTabs[0].active ? '' : 'displayNone' }),
-                                _react2.default.createElement('pre', { id: 'responseHeader',
-                                    className: this.state.responseTabs[1].active ? '' : 'displayNone' })
+                                _react2.default.createElement('pre', { id: 'responseText_' + this.props.id,
+                                    className: this.state.responseTabs[0].active ? 'responseText' : 'displayNone responseText' }),
+                                _react2.default.createElement('pre', { id: 'responseHeader_' + this.props.id,
+                                    className: this.state.responseTabs[1].active ? 'responseHeader' : 'displayNone responseHeader' })
                             )
                         )
                     )
@@ -18912,50 +18911,6 @@ var Posts = function (_React$Component2) {
                     });
                     break;
             }
-        }
-    }, {
-        key: 'requestSend',
-        value: function requestSend() {
-            // var url = this.state.url;
-            // var requestParams = JSON.stringify(JSON.parse(this.state.requestParams));
-
-            console.log(this.state);
-            return;
-
-            var params = JSON.stringify({});
-            $.ajax({
-                type: "POST",
-                url: './index.php',
-                data: params,
-                success: function success(data) {
-                    var result = JSON.parse(data);
-                    document.getElementById("responseText").innerHTML = posts.syntaxHighlight(JSON.stringify(result, null, 4));
-                    // document.getElementById("responseHeader").innerHTML = header;
-                },
-                error: function error() {}
-            });
-
-            var posts = this;
-
-            var xmlhttp;
-            var url = "./index.php";
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var header = xmlhttp.getAllResponseHeaders();
-                    var data = xmlhttp.responseText;
-                    // posts.setState({
-                    //     responseParams: JSON.stringify(JSON.parse(data), null, 4),
-                    //     responseHeader: header
-                    // })
-                } else {}
-            };
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
         }
     }, {
         key: 'requestSave',
@@ -19038,11 +18993,11 @@ var TabCard = function (_React$Component3) {
         _this5.state = {
             tabs: [{
                 id: 0,
-                name: "测试接口1",
+                name: "测试接口",
                 active: true,
                 posts: {
                     httpType: 'POST',
-                    url: null,
+                    url: '/libinterview',
                     description: null,
                     requestParams: null,
                     requestHeader: null,
@@ -19121,14 +19076,14 @@ var TabCard = function (_React$Component3) {
                 if (tabs.length == 0) {
                     var posts = {
                         httpType: 'POST',
-                        url: null,
+                        url: '/libinterview',
                         desc: null,
                         requestParams: null,
                         requestHeader: null,
                         responseParams: null,
                         responseHeader: null
                     };
-                    tabs = [{ id: 1, name: "测试接口1", active: true, posts: posts }];
+                    tabs = [{ id: 0, name: "测试接口", active: true, posts: posts }];
                 }
                 this.setState({
                     tabs: tabs
@@ -19139,18 +19094,21 @@ var TabCard = function (_React$Component3) {
         key: 'handleAddTabs',
         value: function handleAddTabs() {
             var tabs = this.state.tabs.slice();
+            tabs.forEach(function (v, i, array) {
+                v.active = false;
+            });
             var newId = parseInt(tabs[tabs.length - 1].id) + 1;
             var newName = '测试接口' + newId;
             var posts = {
                 httpType: 'POST',
-                url: null,
+                url: '/libinterview',
                 desc: null,
                 requestParams: null,
                 requestHeader: null,
                 responseParams: null,
                 responseHeader: null
             };
-            tabs.push({ id: newId, name: newName, active: false, posts: posts });
+            tabs.push({ id: newId, name: newName, active: true, posts: posts });
             this.setState({
                 tabs: tabs
             });
@@ -19236,7 +19194,6 @@ var TabCard = function (_React$Component3) {
             var url = this.state.tabs[id]['posts']['url'];
             var params = {};
             eval("params = " + this.state.tabs[id]['posts']['requestParams']);
-            console.log(params);
             params = JSON.stringify(params);
             $.ajax({
                 type: type,
@@ -19246,10 +19203,13 @@ var TabCard = function (_React$Component3) {
                 contentType: 'application/json',
                 success: function success(data) {
                     var result = JSON.parse(data);
-                    document.getElementById("responseText").innerHTML = self.syntaxHighlight(JSON.stringify(result, null, 4));
-                    // document.getElementById("responseHeader").innerHTML = header;
+                    document.getElementById("responseText_" + id).innerHTML = self.syntaxHighlight(JSON.stringify(result, null, 4));
                 },
-                error: function error() {}
+                error: function error() {},
+                complete: function complete(xhr) {
+                    var header = xhr.getAllResponseHeaders();
+                    document.getElementById("responseHeader_" + id).innerHTML = header;
+                }
             });
         }
 
@@ -19289,7 +19249,10 @@ var TabCard = function (_React$Component3) {
                     this.state.tabs.map(function (v, i) {
                         return _react2.default.createElement(Tab, {
                             key: i,
-                            onClick: function onClick() {
+                            selectChange: function selectChange(event, id) {
+                                return _this6.selectChange(event, v.id);
+                            },
+                            onClick: function onClick(event, id) {
                                 return _this6.handleTabClick(event, v.id);
                             },
                             name: v.name,
