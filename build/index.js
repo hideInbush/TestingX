@@ -19235,14 +19235,15 @@ var TabCard = function (_React$Component3) {
             var type = this.state.tabs[id]['posts']['httpType'];
             var url = this.state.tabs[id]['posts']['url'];
             var params = {};
-            params.type = type;
-            params.url = url;
-            params.request = this.state.tabs[id]['posts']['requestParams'] || '';
+            eval("params = " + this.state.tabs[id]['posts']['requestParams']);
+            console.log(params);
             params = JSON.stringify(params);
             $.ajax({
-                type: 'post',
-                url: 'http://127.0.0.1:8989',
+                type: type,
+                url: url,
                 data: params,
+                dataType: "text",
+                contentType: 'application/json',
                 success: function success(data) {
                     var result = JSON.parse(data);
                     document.getElementById("responseText").innerHTML = self.syntaxHighlight(JSON.stringify(result, null, 4));
