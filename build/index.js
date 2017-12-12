@@ -18876,10 +18876,10 @@ var Posts = function (_React$Component2) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'content', id: 'responseContent' },
-                                _react2.default.createElement('pre', { id: 'responseText_' + this.props.id,
-                                    className: this.state.responseTabs[0].active ? 'responseText' : 'displayNone responseText' }),
-                                _react2.default.createElement('pre', { id: 'responseHeader_' + this.props.id,
-                                    className: this.state.responseTabs[1].active ? 'responseHeader' : 'displayNone responseHeader' })
+                                _react2.default.createElement('textarea', { className: this.state.responseTabs[0].active ? 'responseText' : 'displayNone responseText',
+                                    value: this.props.posts.responseParams || '' }),
+                                _react2.default.createElement('textarea', { className: this.state.responseTabs[1].active ? 'responseHeader' : 'displayNone responseHeader',
+                                    value: this.props.posts.responseHeader || '' })
                             )
                         )
                     )
@@ -19190,10 +19190,19 @@ var TabCard = function (_React$Component3) {
         value: function sendRequest(id) {
             var self = this;
 
-            var type = this.state.tabs[id]['posts']['httpType'];
-            var url = this.state.tabs[id]['posts']['url'];
+            var tabs = this.state.tabs.slice();
+            var type = '';
+            var url = '';
+            var requestParams = '';
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].id == id) {
+                    type = tabs[i]['posts']['httpType'];
+                    url = tabs[i]['posts']['url'];
+                    requestParams = tabs[i]['posts']['requestParams'];
+                }
+            }
             var params = {};
-            eval("params = " + this.state.tabs[id]['posts']['requestParams']);
+            eval("params = " + requestParams);
             params = JSON.stringify(params);
             $.ajax({
                 type: type,
@@ -19203,12 +19212,30 @@ var TabCard = function (_React$Component3) {
                 contentType: 'application/json',
                 success: function success(data) {
                     var result = JSON.parse(data);
-                    document.getElementById("responseText_" + id).innerHTML = self.syntaxHighlight(JSON.stringify(result, null, 4));
+                    // document.getElementById("responseText_"+id).innerHTML = self.syntaxHighlight(JSON.stringify(result, null ,4));
+
+                    for (var i = 0; i < tabs.length; i++) {
+                        if (tabs[i].id == id) {
+                            tabs[i]['posts']['responseParams'] = JSON.stringify(result, null, 4);
+                            break;
+                        }
+                    }
                 },
                 error: function error() {},
                 complete: function complete(xhr) {
                     var header = xhr.getAllResponseHeaders();
-                    document.getElementById("responseHeader_" + id).innerHTML = header;
+                    // document.getElementById("responseHeader_"+id).innerHTML = header;
+
+                    for (var i = 0; i < tabs.length; i++) {
+                        if (tabs[i].id == id) {
+                            tabs[i]['posts']['responseHeader'] = header;
+                            break;
+                        }
+                    }
+
+                    self.setState({
+                        tabs: tabs
+                    });
                 }
             });
         }
