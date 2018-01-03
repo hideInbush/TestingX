@@ -6,6 +6,7 @@ import SideBar from '../jsx/components/sideBar';
 import ReviseForm from '../jsx/components/reviseForm';
 import TabCard from '../jsx/components/tabCard';
 
+window.$ = require("jquery");
 var eventProxy = require('eventproxy')();
 ReactDOM.render(
     <div>
