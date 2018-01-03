@@ -1,6 +1,6 @@
 import React from 'react';
 
-var jq = require("jquery")();
+var $ = require("jquery");
 
 /**选项卡 */
 class Tab extends React.Component{

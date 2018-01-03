@@ -2,6 +2,7 @@
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require('webpack');
 var ROOT_PATH = path.resolve(__dirname);
 var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 var SRC_PATH = path.resolve(ROOT_PATH, 'src');
@@ -13,6 +14,7 @@ var TEMPLATE_PATH = path.resolve(SRC_PATH, 'template');
 module.exports = {
     entry: {
         index: path.resolve(VIEW_PATH, 'index.js'),
+        vendors: ['jquery']
     },
     output: {
         path: BUILD_PATH,
@@ -50,6 +52,7 @@ module.exports = {
         extensions: ['.js','.jsx']
     },
     plugins: [
+        new webpack.optimize.CommonsChunkPlugin({name:'vendors',filename:'vendors.js'}),
         new ExtractTextPlugin('index.css'),
         new HtmlWebpackPlugin({
             title: 'TestingX',
