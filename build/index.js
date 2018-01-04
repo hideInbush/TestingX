@@ -18805,6 +18805,13 @@ var Posts = function (_React$Component2) {
                                         },
                                         className: this.state.responseTabs[1].active ? 'tabs_items-actived' : '' },
                                     'Header'
+                                ),
+                                _react2.default.createElement(
+                                    'a',
+                                    { onClick: function onClick() {
+                                            return _this4.props.clearResponse(_this4.props.id);
+                                        }, style: { 'float': 'right' } },
+                                    'Clear Content'
                                 )
                             ),
                             _react2.default.createElement(
@@ -19174,6 +19181,21 @@ var TabCard = function (_React$Component3) {
             });
         }
     }, {
+        key: 'clearResponse',
+        value: function clearResponse(id) {
+            var tabs = this.state.tabs.slice();
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].id == id) {
+                    tabs[i].posts.responseParams = '';
+                    tabs[i].posts.responseHeader = '';
+                    break;
+                }
+            }
+            this.setState({
+                tabs: tabs
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this6 = this;
@@ -19231,6 +19253,9 @@ var TabCard = function (_React$Component3) {
                             },
                             sendRequest: function sendRequest(id) {
                                 return _this6.sendRequest(v.id);
+                            },
+                            clearResponse: function clearResponse(id) {
+                                return _this6.clearResponse(v.id);
                             }
                         });
                     })

@@ -68,6 +68,8 @@ body>div:first-child{
     width: 300px;
     border-right: 1px solid #ebebe7;
     height: 100%;
+
+    display: none;
 }
 .sideBar .filter{
     height: 70px;
@@ -183,7 +185,8 @@ body>div:first-child{
 
 .container{
     float: left;
-    width: calc(100% - 301px);
+    /* width: calc(100% - 301px); */
+    width: 100%;
     height: 100%;
 }
 

@@ -70,6 +70,7 @@ class Posts extends React.Component{
                                         className={this.state.responseTabs[0].active ? 'tabs_items-actived' : ''}>JSON</a>
                                 <a onClick={() => this.tabChange('response', '2')} 
                                         className={this.state.responseTabs[1].active ? 'tabs_items-actived' : ''}>Header</a>
+                                <a  onClick={() => this.props.clearResponse(this.props.id)} style={{'float':'right'}}>Clear Content</a>
                             </div>
                             <div className="content" id="responseContent">
                                 <textarea className={this.state.responseTabs[0].active ? 'responseText' : 'displayNone responseText'}
@@ -428,6 +429,20 @@ class TabCard extends React.Component{
         });
     }
 
+    clearResponse(id){
+        var tabs = this.state.tabs.slice();
+        for(var i=0; i<tabs.length; i++){
+            if(tabs[i].id == id){
+                tabs[i].posts.responseParams = '';
+                tabs[i].posts.responseHeader = '';
+                break;
+            }
+        }
+        this.setState({
+            tabs: tabs
+        })
+    }
+
     render(){
         return (
             <div className="container">
@@ -456,6 +471,7 @@ class TabCard extends React.Component{
                             textChange={(event, type, id) => this.textChange(event, type, v.id)}
                             jsonBeautify={(id) => this.jsonBeautify(v.id)}
                             sendRequest={(id) => this.sendRequest(v.id)}
+                            clearResponse={(id) => this.clearResponse(v.id)}
                         />
                     )}
                 </div>
